@@ -1,27 +1,13 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
+import { Button, YStack, H1, Input } from 'tamagui'
+import { Airplay } from '@tamagui/lucide-icons'
+import React from 'react';
 
 export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-    </View>
+    <YStack px="$4">
+      <Input size="$4" borderWidth={2} placeholder='Search'/>
+    </YStack>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
