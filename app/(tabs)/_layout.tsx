@@ -1,50 +1,57 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import '@tamagui/core/reset.css'
 
-import Colors from '@/constants/Colors';
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+import React, { useEffect } from 'react'
+import { SplashScreen, Tabs } from 'expo-router'
+import { Clapperboard, Heart } from '@tamagui/lucide-icons'
+import { config } from '@tamagui/config'
+import { TamaguiProvider, createTamagui } from 'tamagui'
+import { useFonts } from 'expo-font'
+import { queryClient } from '@/utils/clients'
+import { QueryClientProvider } from '@tanstack/react-query'
+
+
+SplashScreen.preventAutoHideAsync()
+const tamaguiConfig = createTamagui(config)
+
+type Conf = typeof tamaguiConfig
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf { }
 }
 
-export default function TabLayout() {
+export default function TabsRoutesLayout() {
+  const [loaded] = useFonts({
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  })
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync()
+    }
+  }, [loaded])
+
+  if (!loaded) return null
 
   return (
-    <Tabs
-      screenOptions={{
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
+    <TamaguiProvider config={tamaguiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <Tabs screenOptions={{ headerShown: false }}>
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: 'Home',
+              tabBarIcon: ({ color }) => <Clapperboard color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="favorites"
+            options={{
+              title: 'Favorites',
+              tabBarIcon: ({ color }) => <Heart color={color} />,
+            }}
+          />
+        </Tabs>
+      </QueryClientProvider >
+    </TamaguiProvider >
+  )
 }

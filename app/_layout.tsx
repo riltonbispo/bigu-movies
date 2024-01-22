@@ -1,27 +1,36 @@
-import '@tamagui/core/reset.css'
+import React from 'react'
+import { Stack } from 'expo-router'
+import { Film, MonitorPlay } from '@tamagui/lucide-icons'
+import { queryClient } from '@/utils/clients'
+import { QueryClientProvider } from '@tanstack/react-query'
 
-import { TamaguiProvider, createTamagui } from 'tamagui'
-import { config } from '@tamagui/config/v2'
-
-import { Stack } from 'expo-router';
-
-const tamaguiConfig = createTamagui(config)
-
-type Conf = typeof tamaguiConfig
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf { }
-}
-
-
-export default function LayoutApp() {
+export default function LayoutStack() {
   return (
-    <TamaguiProvider config={tamaguiConfig}>
+    <QueryClientProvider client={queryClient}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen
+          name='movie/[id]'
+          options={{
+            title: 'Movie',
+            headerLeft: () => <Film color={'black'} />,
+            headerBackVisible: true,
+          }}
+        />
+        <Stack.Screen
+          name='tv/[id]'
+          options={{
+            title: 'Movie',
+            headerLeft: () => <MonitorPlay color={'black'} />,
+            headerBackVisible: true
+          }}
+        />
+        <Stack.Screen
+          name='(tabs)'
+          options={{
+            headerShown: false
+          }}
+        />
       </Stack>
-    </TamaguiProvider>
-  );
+    </QueryClientProvider>
+  )
 }
-
-
