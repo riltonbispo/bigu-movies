@@ -31,8 +31,8 @@ export default function DetailsPage({ id, mediaType }: props) {
             <Image
               source={{
                 uri: `https://image.tmdb.org/t/p/w500/${movieQuery.data?.poster_path}`,
-                width: 150,
-                height: 200,
+                width: 100,
+                height: 150,
               }}
               m='$4'
               borderRadius='$4'
